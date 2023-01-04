@@ -3,15 +3,16 @@ import * as yup from 'yup';
 import React, { useEffect, useState } from 'react'
 import { Image, ScrollView, StyleSheet, Text,  View } from 'react-native-web';
 import { colors } from '../../src/constants';
-import { Caption, Checkbox, Menu, Subheading,TextInput } from 'react-native-paper';
+import { Caption, Checkbox, Dialog, Menu, Subheading,TextInput } from 'react-native-paper';
 import { Button } from 'react-native-paper';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SelectList } from 'react-native-dropdown-select-list'
 import axios from 'axios';
+import ImageCropPicker from 'react-native-image-crop-picker';
 export function KYCWizard() {
-    const[pageNumber,setpageNumber]=useState(1); 
-    const [currStep, setCurrStep] = useState(1);
-    const [headingIndex, setHeadingIndex] =useState(1)
+    const[pageNumber,setpageNumber]=useState(2); 
+    const [currStep, setCurrStep] = useState(2);
+    const [headingIndex, setHeadingIndex] =useState(2)
     const [parentState, setParentHandlre] = useState({
             first_name:'',
             last_name: '',
@@ -28,39 +29,39 @@ export function KYCWizard() {
             country: '',
 
     })
-  
+
     const parentHandlre = (parentState) => {
       setParentHandlre(parentState)
       console.log(parentState)
     }
 
-  useEffect(() => {
-    renderStep(currStep);
-  }, [currStep]);
-  const renderStep = (index) => {
-    switch (index) {
-      case 0:
-        return <UserForm1 moveStep={setCurrStep} currentIndex={setpageNumber} parentData={parentHandlre}/>;
-      case 1:
-        return <UserForm2 moveStep={setCurrStep} currentIndex={setpageNumber} myheading={setHeadingIndex}/>;
-      case 2:
-        return <UserForm3 moveStep={setCurrStep} myheading={headingIndex} />;
-      case 3:
-        // return <UserForm3 moveStep={setCurrStep} />;
-      case 4:
-        // return <UserForm3 moveStep={setCurrStep} />;      
-      
-    }
-  };
-  return (
+    useEffect(() => {
+      renderStep(currStep);
+    }, [currStep]);
+    const renderStep = (index) => {
+      switch (index) {
+        case 0:
+          return <UserForm1 moveStep={setCurrStep} currentIndex={setpageNumber} parentData={parentHandlre}/>;
+        case 1:
+          return <UserForm2 moveStep={setCurrStep} currentIndex={setpageNumber} myheading={setHeadingIndex} parentData={parentHandlre}/>;
+        case 2:
+          return <UserForm3 moveStep={setCurrStep} myheading={headingIndex} />;
+        case 3:
+          // return <UserForm3 moveStep={setCurrStep} />;
+        case 4:
+          // return <UserForm3 moveStep={setCurrStep} />;      
+        
+      }
+    };
+    return (
 
-    <View style={{...KYCStyles.container}}>
-      <Header position={pageNumber}/>
-      <SubHeadingOrCapiton headingIndex={headingIndex}/>
-      {renderStep(currStep)}
-    </View>
-    
-  )
+      <View style={{...KYCStyles.container}}>
+        <Header position={pageNumber}/>
+        <SubHeadingOrCapiton headingIndex={headingIndex}/>
+        {renderStep(currStep)}
+      </View>
+      
+    )
 }
 function SubHeadingOrCapiton({headingIndex}){
     console.log(headingIndex)
@@ -335,8 +336,8 @@ function UserForm2(props){
         }}
         validationSchema={formSchema}
         onSubmit={(values) => {
-          console.log('sub', values);
-          sendBasicForm(values);
+          // console.log('sub', values);
+          // sendBasicForm(values);
         }}>
         {({ setValues, handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
           <>
@@ -501,6 +502,7 @@ function UserForm2(props){
                       activeUnderlineColor="#424040"
                       style={{ ...KYCStyles.input, top: 3 }}
                       color="#686868"
+                      value={values.state}
                       onChangeText={handleChange('state')}
                       onBlur={handleBlur('state')}
                       placeholder={"Enter state"}
@@ -550,6 +552,7 @@ function UserForm2(props){
               activeUnderlineColor="#424040"
               style={KYCStyles.input}
               color="#686868"
+              value={values.city}
               placeholderTextColor={colors.darkgreytxt}
               onChangeText={handleChange('city')}
               onBlur={handleBlur('city')}
@@ -574,6 +577,7 @@ function UserForm2(props){
               activeUnderlineColor="#424040"
               style={KYCStyles.input}
               color="#686868"
+              value={values.pincode}
               placeholderTextColor={colors.darkgreytxt}
               keyboardType='phone-pad'
               onChangeText={handleChange('pincode')}
@@ -613,7 +617,7 @@ function UserForm2(props){
                     // disabled={disabled}
                     dark={false}
                     style={KYCStyles.button}
-                    onPress={() => {props.currentIndex(2),props.moveStep(2),handleSubmit,props.myheading(1)}}
+                    onPress={() => {props.currentIndex(2),props.moveStep(2),handleSubmit,props.myheading(1),props.parentData(values)}}
                     compact={false}
                     contentStyle={{
                       alignSelf: 'stretch',
@@ -653,13 +657,135 @@ function UserForm3({moveStep,currentIndex,myheading}){
   const [backSide, setbackSide] = useState('');
   const [docAndSelfie, setdocAndSelfie] = useState('');
   const [disabled, setDisabled] =useState(true)
+  const [currDoc, setCurrDoc] = React.useState(null);
+  const [visible, setVisible] = React.useState(false);
+
+
+const showDialog = () => setVisible(true);
+const hideDialog = () => setVisible(false);
+      const openDialog = (location) => {
+        showDialog();
+        setCurrDoc(location);
+      };
   const formSchema = yup.object({
     selfie: yup.string().required('Upload selfie '),
     front_side: yup.string().required('Upload Front Side Image'),
     back_side: yup.string().email().required('Upload back Side Image' ),
     selfie_with_doc:yup.string().required('Upload Selfie with Document')
   });
+  const takepicnow = (type, location) => {
+     if (type === 'camera'){
+       ImageCropPicker.openCamera({
+         // cropping: true,
+         // freeStyleCropEnabled: true,
+       }).then((image) => {
+         console.log(image);
+         switch (location) {
+           case 's':
+             setSelfie(image.path);
+             break;
+           case 'df':
+             setdocFront(image.path);
+             break;
+           case 'db':
+             setdocBack(image.path);
+             break;
+           case 'ds':
+             setdocAndSelfie(image.path);
+             break;
+         }
+         hideDialog();
+       });
+     }
+     if (type === 'gallery') {
+      ImageCropPicker.openPicker({
+         width: 300,
+        height: 400,
+         // cropping: true,
+         // freeStyleCropEnabled: true,
+       }).then((image) => {
+         console.log(image);
+         switch (location) {
+           case 's':
+             setSelfie(image.path);
+             break;
+           case 'df':
+             setdocFront(image.path);
+             break;
+           case 'db':
+             setdocBack(image.path);
+             break;
+           case 'ds':
+             setdocAndSelfie(image.path);
+             break;
+         }
+         hideDialog();
+       });
+     }
+  };
+      React.useEffect(() => {
+        console.log(selfie)
+        if (selfie !== '') {
+          
+          postPic('user_profile_image', selfie);
 
+        }
+      }, [selfie]);
+
+      function postPic(name, file){
+        console.log({ name, file }, 'payload');
+        let fileName
+        if(file!=null){
+          fileName = file.split('/').pop();
+        }
+        
+        var photo = {
+          uri: file,
+          type: 'image/jpeg',
+          name: fileName,
+        };
+        var formData = new FormData();
+        formData.append(name, photo);
+        axios({
+          method: 'POST',
+          url: 'https://www.proassetz.com/api/v1/update-kyc-documents/',
+          data: formData,
+          headers: {
+            Accept: 'application/json',
+            Authorization: 'Bearer ' + token,
+            'Content-Type': 'multipart/form-data',
+          },
+          transformRequest: (data, headers) => {
+            return formData;
+          },
+        })
+          .then(function (response) {
+            console.log(response, 'pppp');
+            areDocumentsUploaded();
+          })
+          .catch(function (error) {
+            console.log(error.response);
+            areDocumentsUploaded();
+          }); 
+    
+        areDocumentsUploaded();
+      };
+      const areDocumentsUploaded = () => {
+        if (
+          selfie !== '' &&
+          frontSide !== '' &&
+          backSide !== '' &&
+          docAndSelfie !== ''
+        ) {
+          setTimeout(() => {
+            setAllDocsUploaded(!allDocsUploaded);
+            setSnackMssg('All documents successfully uploaded');
+            onToggleSnackBar();
+          }, 100);
+        } else {
+          // setAllDocsUploaded(false);
+        }
+      };
   return(
     <View style ={KYCStyles.container}>
       <Formik
@@ -719,6 +845,7 @@ function UserForm3({moveStep,currentIndex,myheading}){
                     showSoftInputOnFocus={false}
                     placeholder={"Upload Selfie"}
                     placeholderTextColor={colors.darkgreytxt}
+                    onFocus={() => openDialog('s')}
                     
                 />
                 { 
@@ -976,6 +1103,16 @@ function UserForm3({moveStep,currentIndex,myheading}){
                 
             )}
       </Formik>
+      <Dialog visible={visible} onDismiss={hideDialog}>
+        <Dialog.Title>Mode</Dialog.Title>
+        <Dialog.Content>
+          <Text>Select an option</Text>
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button onPress={() => takepicnow('gallery', currDoc)}>Gallery</Button>
+          <Button onPress={() => takepicnow('camera', currDoc)}>Camera</Button>
+        </Dialog.Actions>
+      </Dialog>
     </View>
   )
 }
