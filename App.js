@@ -11,20 +11,21 @@ import LoginScreen from './Page/LoginPage/LoginScreen';
 import {  SplashScreen } from './Page/SplashScreen';
 import VerifyEmail from './Page/verifyEmail/VarifyEmail';
 import { WelcomeSplash } from './Page/Welcome/WelcomeScreen';
-
+import { Provider as PaperProvider } from 'react-native-paper';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
   
   return (
+    <PaperProvider>
     <NavigationContainer>
       <Stack.Navigator>
             {/* <Stack.Screen
               name="WelcomeScreen"
               component={WelcomeSplash}
               options={{ headerShown: false }}
-             /> */}
-           {/* <Stack.Screen
+             />
+            <Stack.Screen
               name='SplashScreen'
               component={SplashScreen}
               options={{ headerShown: false }}
@@ -53,12 +54,12 @@ export default function App() {
               name='EmailAuthenticationScreen'
               component={EmailAuthentication}
               options={{ headerShown: false }}
-            /> */}
-            {/* <Stack.Screen
+            />
+            <Stack.Screen
               name='KYCScreen'
               component={KYCWelcome}
               options={{ headerShown: false }}
-            />  */}
+            />   */}
             <Stack.Screen
               name='KYCWizardScreen'
               component={KYCWizard}
@@ -66,6 +67,7 @@ export default function App() {
             /> 
           </Stack.Navigator>
     </NavigationContainer>
+    </PaperProvider>
   );
 }
 

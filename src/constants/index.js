@@ -1,0 +1,25 @@
+export const colors = {
+    bgColor: '#212121',
+    yellowLg: '#FFB916',
+    yellowDark: 'rgba(226, 146, 36, 1)',
+    graylg: '#D0D0D0',
+    grayMed: '#9E9D9E',
+    grayDark: '#6E6E6E',
+    lightWhitre: '#FFF6E0',
+    white: '#FFF6E0',
+    greytxt: "#686868",
+    input: '#424141',
+    lightgrey: "#464646",
+    darkgrey: "#2C2B2B",
+    darkgreytxt: "#838D95",
+    browntxt: "#E29224",
+    green: 'rgba(56, 183, 129, 1)',
+    ligBlack: 'rgba(135, 135, 135, 1)',
+    lightOrange: 'rgba(140, 89, 18, 1)',
+    darkOrange: 'rgba(226, 145, 37, 1)',
+    lightDark: 'rgba(110, 110, 110, 1)',
+    redColor: 'rgba(255, 84, 94, 1)',
+    lightgreen: "#38B781",
+    lightred: "#FF545E"
+  };
+  
