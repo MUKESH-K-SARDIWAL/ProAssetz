@@ -12,6 +12,8 @@ import {  SplashScreen } from './Page/SplashScreen';
 import VerifyEmail from './Page/verifyEmail/VarifyEmail';
 import { WelcomeSplash } from './Page/Welcome/WelcomeScreen';
 import { Provider as PaperProvider } from 'react-native-paper';
+import FillBankDetail from './Page/BankDetail/FillBankDetail';
+import BankDetailsConfirm from './Page/BankDetail/bankDetailConfirm';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -60,9 +62,19 @@ export default function App() {
               component={KYCWelcome}
               options={{ headerShown: false }}
             />   */}
-            <Stack.Screen
+            {/* <Stack.Screen
               name='KYCWizardScreen'
               component={KYCWizard}
+              options={{ headerShown: false }}
+            /> */}
+            <Stack.Screen
+              name='FBDScreen'
+              component={FillBankDetail}
+              options={{ headerShown: false }}
+            /> 
+            <Stack.Screen
+              name='BankDetailsConfirmScreen'
+              component={BankDetailsConfirm}
               options={{ headerShown: false }}
             /> 
           </Stack.Navigator>
