@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import React from 'react'
+import React,{useContext,useState} from 'react'
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native-web'
 import { colors } from '../../src/constants'
 import * as yup from 'yup'
@@ -8,8 +8,15 @@ import { Pressable } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-
+import AuthContext from '../../context/AuthContext';
 function LoginScreen() {
+  const { setUserData } = useContext(AuthContext)
+  const [email, setemail] = useState('')
+  const [pass, setpass] = useState('')
+    const user = {
+      email: email,
+      password: pass,
+    }
     const formSchema = yup.object({
         email: yup.string().email().required(),
         password: yup.string().required(),
@@ -29,19 +36,15 @@ function LoginScreen() {
           .then(function (response) {
             console.log('response ==>', response.data);
             if (response?.data?.otp_type == 'google') {
-                // user.email = formData.email
-                // user.password = formData.password
-                
-                // navigation.navigate('TwoFactorOTP', { formData, response });
-                // setUserData({ email: formData.email, password: formData.password })
-                   storeData({ email: formData.email, password: formData.password });
-                   alert(response.data.message);
-              
-                // navigation.navigate('EmailAuth', { formData, response });
-                // navigation.navigate('VerifyEmail', { formData, response });
+              user.email = formData.email
+              user.password = formData.password
+              navigation.navigate('TwoFactorAuthQRScreen', { formData, response });
+              setUserData({ email: formData.email, password: formData.password })
+              storeData();
             } else if (response.data.otp_type == 'email') {
+                console.log(response)
                 storeData({ email: formData.email, password: formData.password });
-                navigation.navigate('EmailAuthenticationScreen', { formData, response });
+                navigation.navigate('EmailAuthenticationScreen', { formData });
                 }
           })
           .catch(function (error) {
@@ -55,9 +58,7 @@ function LoginScreen() {
             }
             console.log(errm);
             alert(error.response.data.message, 'Verify email if not verified');
-            // setSnackMssg(`${errm}`);
-            // onToggleSnackBar();
-            // console.log(error);
+            console.log(error);
           });
       };
   return (

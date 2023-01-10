@@ -7,6 +7,7 @@ import { colors } from '../../src/constants';
 import { Button, Checkbox } from 'react-native-paper';
 import { Pressable } from 'react-native';
 import { CodeField ,useClearByFocusCell, useBlurOnFulfill,Cursor,isLastFilledCell} from 'react-native-confirmation-code-field';
+import axios from 'axios';
 
 
 
@@ -23,11 +24,13 @@ export const EmailAuthentication=(props)=> {
     setValue,
   });
   const handleVerifyOtp = (otp) => {
-    let reqBody = {
-      ...props?.route?.params?.formData,
+    console.log('propssss',props)
+    console.log('otp',otp)
+    const reqBody = {
+      ...props.route.params.formData,
       email_otp: otp,
     };
-    console.warn(...props?.route?.params?.formData,)
+    // console.warn('weiruhiweuhwer',...props?.route?.params?.formData,)
     console.log('make req with', reqBody);
     axios
       .post('https://www.proassetz.com/api/v1/user-login/', reqBody)
@@ -35,7 +38,7 @@ export const EmailAuthentication=(props)=> {
         console.log(response);
         if (response.data.otp_type === 'google') {
           let qrData = { ...response.data, ...reqBody };
-          navigation.navigate('TwoFactorAuth', { qrData });
+          navigation.navigate('TwoFactorAutheticationScreen', { qrData });
         }
       })
       .catch(function (error) {
@@ -123,12 +126,12 @@ export const EmailAuthentication=(props)=> {
             <Pressable
             style={EmailAuthenticationStyle.button}
             onPress={() => {
-              if (otpDone) {
-                
+              // if (otpDone) {
+                // console.log(value)
                 handleVerifyOtp(value);
-              } else {
-                alert('OTP invalid');
-              }
+              // } else {
+              //   alert('OTP invalid');
+              // }
             }}>
             <Text style={{ color: 'black', textAlign: 'center' }}>Verify</Text>
           </Pressable>

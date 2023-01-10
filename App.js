@@ -14,6 +14,11 @@ import { WelcomeSplash } from './Page/Welcome/WelcomeScreen';
 import { Provider as PaperProvider } from 'react-native-paper';
 import FillBankDetail from './Page/BankDetail/FillBankDetail';
 import BankDetailsConfirm from './Page/BankDetail/bankDetailConfirm';
+import { BankDocumentUpload } from './Page/BankDetail/BankDocumentUpload';
+import TwoFactorAuth from './Page/Two-Factor-Authentication/firstPage';
+import TwoFactorAuthQR from './Page/Two-Factor-Authentication/twoFactorQR';
+import TwoFactorOTP from './Page/Two-Factor-Authentication/TwoFactorOtpVerify';
+import { Home } from './Page/HomePage/Home';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -26,18 +31,18 @@ export default function App() {
               name="WelcomeScreen"
               component={WelcomeSplash}
               options={{ headerShown: false }}
-             />
-            <Stack.Screen
+             /> */}
+            {/* <Stack.Screen
               name='SplashScreen'
               component={SplashScreen}
               options={{ headerShown: false }}
-            /> 
-            <Stack.Screen
+            />  */}
+            {/* <Stack.Screen
               name='CreateAccountScreen'
               component={CreateAccountScreen}
               options={{ headerShown: false }}
-            /> 
-             <Stack.Screen
+            /> */}
+             {/* <Stack.Screen
               name='LoginScreen'
               component={LoginScreen}
               options={{ headerShown: false }}
@@ -51,23 +56,50 @@ export default function App() {
               name='VerifyEmailScreen'
               component={VerifyEmail}
               options={{ headerShown: false }}
+            /> */}
+            {/* <Stack.Screen
+              name='EmailAuthenticationScreen'
+              component={EmailAuthentication}
+              options={{ headerShown: false }}
             />
+            
             <Stack.Screen
+              name='KYCScreen'
+              component={KYCWelcome}
+              options={{ headerShown: false }}
+            />   
+             <Stack.Screen
+              name='KYCWizardScreen'
+              component={KYCWizard}
+              options={{ headerShown: false }}
+            /> */}
+          
+            {/* <Stack.Screen
+              name='LoginScreen'
+              component={LoginScreen}
+              options={{ headerShown: false }}
+            />
+             <Stack.Screen
               name='EmailAuthenticationScreen'
               component={EmailAuthentication}
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name='KYCScreen'
-              component={KYCWelcome}
+              name='TwoFactorAutheticationScreen'
+              component={TwoFactorAuth}
               options={{ headerShown: false }}
-            />   */}
-            {/* <Stack.Screen
-              name='KYCWizardScreen'
-              component={KYCWizard}
+            />
+            <Stack.Screen
+              name='TwoFactorAuthQRScreen'
+              component={TwoFactorAuthQR}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name='TwoFactorOTPScreen'
+              component={TwoFactorOTP}
               options={{ headerShown: false }}
             /> */}
-            <Stack.Screen
+             {/* <Stack.Screen
               name='FBDScreen'
               component={FillBankDetail}
               options={{ headerShown: false }}
@@ -76,7 +108,17 @@ export default function App() {
               name='BankDetailsConfirmScreen'
               component={BankDetailsConfirm}
               options={{ headerShown: false }}
-            /> 
+            />
+            <Stack.Screen
+              name='BankDocumentUploadScreen'
+              component={BankDocumentUpload}
+              options={{ headerShown: false }}
+            />  */}
+            <Stack.Screen
+              name='HomeScreen'
+              component={Home}
+              options={{ headerShown: false }}
+            />   
           </Stack.Navigator>
     </NavigationContainer>
     </PaperProvider>

@@ -15,10 +15,10 @@ const FillBankDetail = () => {
   const formSchema =yup.object({
     bank_name: yup.string().matches(/^[a-zA-Z]{2,40}/, 'Enter name in words')
     .required('Bank name is required'),
-    ifsc_code:yup.string().required('IFSC code is reqiored'),
-    bank_account_number:yup.string().required('Account number is required'),
-    confirm_bank:yup.string().required('Confirm your Account'),
-    mobile_number:yup.string().matches(/(01)(\d){10}\b/, 'Enter a valid phone number').required('Mobile number required'),
+    ifsc_code:yup.string().required('IFSC code is reqiored').matches(/^(?=.*[A-Z])(?=.*[0-9])/,' IFSC code contain capital latter and Number'),
+    bank_account_number:yup.string().required('Account number is required').matches(/^(?=.*[0-9])/,'Must be in Number'),
+    confirm_bank:yup.string().required('Confirm your Account').oneOf([yup.ref('bank_account_number'), null], 'Account no must match').matches(/^(?=.*[0-9])/,'Must be in Number'),
+    mobile_number:yup.string().matches(/(99)(\d){8}\b/, 'Number Required From 99').required('Mobile number required'),
     upi_address:yup.string().required('UPI address required'),
     account_type:yup.string().required('Enter account type'),
   })  

@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import _ from 'lodash';
 import { Snackbar,TextInput } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 const formSchema = yup.object({
     bank_name: yup.string().required('Bank name is required'),
     bank_account_number: yup.string('bank account number is required').required(),
@@ -18,36 +19,29 @@ const formSchema = yup.object({
 function StyledText({ labelText }) {
     return <Text style={{ color: '#6E6E6E', }}>{labelText}</Text>;
   }
+  
 const BankDetailsConfirm=(props)=>{
     const prevFormvalues = _.cloneDeep(props?.route?.params?.values);
+    const navigation =useNavigation()
     return(
     <View style={styles.container}>
       <Snackbar
         wrapperStyle={{ elevation: 3, zIndex: 3 }}
         style={{ elevation: 3, zIndex: 3 }}
-        // visible={visibleS}
-        // onDismiss={onDismissSnackBar}
         action={{
           label: 'Close',
-          onPress: () => {
-            // Do something
-          },
         }}>
-        {/* {snackMssg} */}
       </Snackbar>
       <Formik
         enableReinitialize={true}
         initialValues={prevFormvalues}
         validationSchema={formSchema}
         onSubmit={(values) => {
-          console.log('bank form before seding', values);
-          // sendBankForm(values);
-          navigation.navigate('BankDetailsAlmostDone',{ token })
+          navigation.navigate('BankDocumentUploadScreen',{ prevFormvalues })
         }}>
-        {({ handleChange, handleBlur, handleSubmit, values, touched, errors }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, touched, errors,isValid }) => (
           <View style={styles.container}>
             <ScrollView style={{ marginTop: 10 }}>
-              {/* <Text style={{ color: 'crimson' }}>selected: {converDate(date)}</Text> */}
               <View style={styles.inputWrapper}>
                 <View style={styles.rowCon}>
                   <View
@@ -65,10 +59,10 @@ const BankDetailsConfirm=(props)=>{
                         color="#fff"
                         placeholder='mmmmm'
                         onChangeText={handleChange('ifsc_code')}
-                        // value={values.ifsc_code}
+                        value={values.ifsc_code}
                         onBlur={handleBlur('ifsc_code')}
                         label={<StyledText labelText="IFSC Code" />}
-                        theme={{ colors: { text: '#fff' } }}
+                        
                       />
                       <Text style={{ color: 'crimson' }}>
                         {touched.ifsc_code && errors.ifsc_code}
@@ -90,9 +84,9 @@ const BankDetailsConfirm=(props)=>{
                         color="#fff"
                         onChangeText={handleChange('bank_name')}
                         onBlur={handleBlur('bank_name')}
-                        // value={values.bank_name}
+                        value={values.bank_name}
                         label={<StyledText labelText="Bank Name" />}
-                        theme={{ colors: { text: '#fff' } }}
+                        
                       />
                       <Text style={{ color: 'crimson' }}>
                         {touched.bank_name && errors.bank_name}
@@ -108,10 +102,10 @@ const BankDetailsConfirm=(props)=>{
                     style={styles.input}
                     color="#fff"
                     onChangeText={handleChange('bank_account_number')}
-                    // value={values.bank_account_number}
+                    value={values.bank_account_number}
                     onBlur={handleBlur('bank_account_number')}
                     label={<StyledText labelText="Bank Account No" />}
-                    theme={{ colors: { text: '#fff' } }}
+                    
                   />
                 </View>
               </View>
@@ -125,11 +119,11 @@ const BankDetailsConfirm=(props)=>{
                   activeUnderlineColor="#424040"
                   style={styles.input}
                   color="#fff"
-                //   value={values.confirm_bank}
+                  value={values.confirm_bank}
                   onChangeText={handleChange('confirm_bank')}
                   onBlur={handleBlur('confirm_bank')}
                   label={<StyledText labelText="Confirm Bank Account" />}
-                  theme={{ colors: { text: '#fff' } }}
+                  
                 />
               </View>
               <Text style={{ color: 'crimson' }}>
@@ -150,10 +144,10 @@ const BankDetailsConfirm=(props)=>{
                       style={styles.input}
                       color="#fff"
                       onChangeText={handleChange('branch_name')}
-                    //   value={values.branch_name}
+                      value={values.branch_name}
                       onBlur={handleBlur('branch_name')}
                       label={<StyledText labelText="Branch Name" />}
-                      theme={{ colors: { text: '#fff' } }}
+                      
                     />
                     <Text style={{ color: 'crimson' }}>
                       {touched.branch_name && errors.branch_name}
@@ -176,8 +170,8 @@ const BankDetailsConfirm=(props)=>{
                       onChangeText={handleChange('account_type')}
                       onBlur={handleBlur('account_type')}
                       label={<StyledText labelText="Account Type" />}
-                    //   value={values.account_type}
-                      theme={{ colors: { text: '#fff' } }}
+                      value={values.account_type}
+                      
                     />
                     <Text style={{ color: 'crimson' }}>
                       {touched.account_type && errors.account_type}
@@ -195,9 +189,9 @@ const BankDetailsConfirm=(props)=>{
                   color="#fff"
                   onChangeText={handleChange('mobile_number')}
                   onBlur={handleBlur('mobile_number')}
-                //   value={values.mobile_number}
+                  value={values.mobile_number}
                   label={<StyledText labelText="Mobile No" />}
-                  theme={{ colors: { text: '#fff' } }}
+                  
                 />
               </View>
               <Text style={{ color: 'crimson' }}>
@@ -212,9 +206,9 @@ const BankDetailsConfirm=(props)=>{
                   color="#fff"
                   onChangeText={handleChange('bank_name')}
                   onBlur={handleBlur('bank_name')}
-                //   value={values.bank_name}
+                  value={values.bank_name}
                   label={<StyledText labelText="Name as on Bank Account" />}
-                  theme={{ colors: { text: '#fff' } }}
+                  
                 />
               </View>
               <Text style={{ color: 'crimson' }}>{touched.bank_name && errors.bank_name}</Text>
@@ -226,20 +220,20 @@ const BankDetailsConfirm=(props)=>{
                   style={styles.input}
                   color="#fff"
                   onChangeText={handleChange('upi_address')}
-                //   value={values.upi_address}
+                  value={values.upi_address}
                   onBlur={handleBlur('upi_address')}
                   label={<StyledText labelText="UPI Address with Bank" />}
-                  theme={{ colors: { text: '#fff' } }}
+                  
                 />
               </View>
               <Text style={{ color: 'crimson' }}>{touched.upi_address && errors.upi_address}</Text>
             </ScrollView>
             <Button
+              disabled={!isValid}
               style={styles.button}
               contentStyle={{ paddingVertical: 10 }}
               color={colors.yellowLg}
               onPress={handleSubmit}
-              // onPress={() => navigation.navigate('BankDetailsAlmostDone')}
               mode="contained"
               title='Next'
              />

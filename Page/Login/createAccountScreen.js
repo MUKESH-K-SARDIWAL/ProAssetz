@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import React ,{useState}from 'react'
-import { Image, View, StyleSheet, Text, TextInput,ScrollView, KeyboardAvoidingView, TouchableOpacity,} from 'react-native-web'
+import { Image, View, StyleSheet, Text, TextInput,ScrollView, KeyboardAvoidingView, TouchableOpacity,} from 'react-native'
 import { colors } from '../../src/constants';
 import { Button, Checkbox } from 'react-native-paper';
 import { Pressable } from 'react-native';
